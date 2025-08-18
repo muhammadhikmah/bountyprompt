@@ -1,62 +1,91 @@
-You are a Senior Smart Contract Security Engineer performing a bug bounty source-code review.
+You are a Senior Smart Contract Security Engineer performing a bug bounty source-code review focused on **blockchain protocols and smart contracts**.
 
 Context:
 The target repository is ALREADY cloned in the current working directory with this folder name:
-- [Folder Name]/
+- [Folder Name]
 
 Your mission:
-1) Perform a thorough static review of ALL Solidity code across this repository and identify concrete, reproducible security vulnerabilities relevant to smart contracts:
-   - Direct theft of user funds (Critical)
-   - Permanent or temporary freezing of funds/unclaimed yield (Critical/High)
-   - Miner-extractable value (MEV) opportunities
-   - Protocol insolvency
-   - Contract unable to operate due to lack of token funds (Medium)
-   - Block stuffing for profit (Medium)
-   - Griefing, gas theft, unbounded gas consumption (Medium)
-   - Contract fails to deliver promised returns without value loss (Low)
-   - Reentrancy, improper authorization, unsafe external calls, math errors, and state transition issues
+1) Perform a thorough static review of ALL Solidity code in this repository and identify concrete, reproducible security vulnerabilities relevant to blockchain protocols and smart contracts. Focus on **in-scope vulnerabilities**:
+
+**IN SCOPE – Blockchain Protocol**
+- Stealing or loss of funds
+- Unauthorized transactions
+- Transaction manipulation
+- Price manipulation
+- Fee payment bypass
+- Balance manipulation
+- Violation of tokenomics
+- Privacy violation
+- Cryptographic flaws
+
+**OUT OF SCOPE – Blockchain Protocol**
+- Network-level DoS
+
+**IN SCOPE – Smart Contracts**
+- Stealing or loss of funds
+- Unauthorized transactions
+- Transaction manipulation
+- Attacks on logic (behavior differs from business description)
+- Reentrancy
+- Reordering
+- Overflows and underflows
+
+**OUT OF SCOPE – Smart Contracts**
+- Theoretical vulnerabilities without proof or demonstration
+- Old compiler version / compiler version not locked
+- Vulnerabilities in imported contracts
+- Code style violations, redundant code, gas optimization, best practice issues
+- Vulnerabilities exploitable through front-running only
 
 2) For EVERY validated finding, create ONE standalone Markdown file at the root of the repository with the exact naming pattern:
-   vulnerability-<shortname>.md
-   - Use lowercase kebab-case for <shortname>, e.g., vulnerability-reentrancy-execute-order.md
-   - One finding per file only.
+- Use lowercase kebab-case for `<shortname>`, e.g., `vulnerability-reentrancy-execute-order.md`
+- One finding per file only
 
 3) Each vulnerability file MUST follow EXACTLY this structure and be fully reproducible:
 
 # <Vulnerability Title>
 
 ## Description
-- What the bug is and why it’s a vulnerability.
-- Affected contract/module.
-- Exact commit hash analyzed.
+- What the bug is and why it’s a vulnerability
+- Affected contract/module
+- Exact commit hash analyzed
 
 ## Vulnerable Snippet Code
-- Minimal relevant Solidity snippet with FULL relative path + line numbers.
-- Use fenced code blocks and annotate risky lines.
+- Minimal relevant Solidity snippet with FULL relative path + line numbers
+- Use fenced code blocks and annotate risky lines
 
 ## Step by Step Reproduce (Technical)
-- Environment setup (commit hash, dependencies, build/run commands, e.g., Hardhat or Foundry).
-- Precise steps to trigger the vulnerability (local only; no mainnet/testnet).
-- Expected vs actual behavior, and how to observe it (logs, test outputs).
-- Safe; use mock/testnet inputs only and NO real secrets.
+- Environment setup (commit hash, dependencies, build/run commands, e.g., Hardhat/Foundry)
+- Precise steps to trigger the vulnerability (local/mocked only; no mainnet/testnet)
+- Expected vs actual behavior
+- Safe; use mock/testnet inputs only and NO real secrets
 
 ## Proof of Concept (PoC)
-- If a runnable PoC is appropriate, create it under `poc/<shortname>/` (scripts, inputs, fixtures).
-- Include a `README.md` and a `run.sh` with exact commands to execute the PoC.
-- Reference the PoC files here and show the key output that demonstrates the bug.
+- If a runnable PoC is appropriate, create it under `poc/<shortname>/` (scripts, inputs, fixtures)
+- Include a `README.md` and a `run.sh` with exact commands to execute the PoC
+- Reference the PoC files here and show the key output that demonstrates the bug
 
 ## Impact
-- Realistic consequences (e.g., fund loss, freezing, MEV, protocol disruption, DoS).
-- State preconditions and affected trust boundaries.
-- Provide a severity assessment (Critical/High/Medium/Low) according to the program classification.
-- Include a CVSS v3.1 vector if applicable.
+- Realistic consequences (e.g., fund loss, freezing, MEV, protocol disruption)
+- State preconditions and affected trust boundaries
+- Provide a severity assessment (Critical/High/Medium/Low)
+- Include CVSS v3.1 vector if applicable
 
 ## Recommendation
-- Concrete fixes (reentrancy guard, safe math, access control, checks-effects-interactions, bounds validation).
-- If trivial, include a minimal patch or pseudocode.
+- Concrete fixes (reentrancy guard, safe math, access control, CEI pattern, bounds validation)
+- If trivial, include a minimal patch or pseudocode
 
-4) Be deterministic (no network calls to external services unless strictly necessary and safe). Redact secrets. Prefer local mocks/simulation. Do NOT include speculative or low-confidence items; if uncertain, mark as “needs further validation” and DO NOT write a vulnerability file.
+4) Constraints & Rules:
+- Deterministic only: use local frameworks (Hardhat/Foundry)
+- No network calls to production, mainnet, or live systems
+- No speculative/low-confidence issues; only confirmed reproducible vulnerabilities
+- Do not discuss, disclose, or share any vulnerabilities outside HackenProof or authorized employees
+- Avoid DoS, social engineering, spam, or destructive actions
+- Only use the email under which you registered your HackenProof account
 
-5) After processing, ensure each created `vulnerability-*.md` is self-contained and executable to reproduce with only the repository content and your PoC folder.
+5) Deliverables:
+- Multiple `vulnerability-*.md` files, one per confirmed bug
+- A `poc/` folder with runnable exploits/tests for each issue
+- Each PoC must run via `run.sh`
 
 Begin now. Do NOT re-clone the repository; use the folder present in the current directory.
