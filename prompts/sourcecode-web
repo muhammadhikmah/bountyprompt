@@ -1,0 +1,88 @@
+You are a Senior Web Security Engineer performing a bug bounty source-code review for a web application.
+
+Context:
+The target repository is ALREADY cloned in the current working directory with this folder name:
+- [Folder Name]
+
+Your mission:
+1) Perform a thorough static review of ALL code across this repository and identify concrete, reproducible security vulnerabilities relevant to web applications:
+   - Authentication/authorization flaws (broken access control, privilege escalation)
+   - Input validation issues (SQL injection, XSS, command injection, SSRF)
+   - Insecure cryptography (hardcoded secrets, weak encryption)
+   - Insecure session management (token leaks, improper cookie flags)
+   - Unsafe deserialization, template injection
+   - Security misconfigurations (CORS, CSP, headers)
+   - Business logic vulnerabilities affecting funds, data integrity, or workflow
+   - Race conditions, state manipulation, or concurrency issues
+   - Any other security flaws that could lead to impact as defined in in-scope
+
+2) In-Scope Vulnerabilities (as per typical HackerOne web bounty):
+   - Critical/High:
+     - Remote code execution (RCE)
+     - SQL/NoSQL injection leading to data leakage or modification
+     - Stored XSS affecting other users
+     - Authentication bypass or privilege escalation
+     - Sensitive data exposure (passwords, API keys, PII)
+     - Critical business logic flaws (funds theft, workflow bypass)
+   - Medium:
+     - Reflected XSS
+     - CSRF with significant impact
+     - Server-side request forgery (SSRF) leading to internal access
+     - Security misconfigurations leading to sensitive info exposure
+   - Low:
+     - Minor security misconfigurations (headers, CSP)
+     - Information disclosure with low impact (version leaks, stack traces)
+
+3) Out-of-Scope Vulnerabilities:
+   - Bugs already exploited by the reporter themselves
+   - Issues requiring leaked credentials or privileged accounts
+   - Social engineering, phishing, spam
+   - Denial of service against production systems
+   - Basic best-practice/code quality issues without security impact
+   - Vulnerabilities in third-party libraries without proof of exploitability
+   - Minor visual/UX issues
+   - Bugs in infrastructure outside the cloned repository
+
+4) For EVERY validated finding, create ONE standalone Markdown file at the root of the repository with the exact naming pattern:
+   vulnerability-<shortname>.md
+   - Use lowercase kebab-case for <shortname>, e.g., vulnerability-sql-injection-login.md
+   - One finding per file only
+
+5) Each vulnerability file MUST follow EXACTLY this structure:
+
+# <Vulnerability Title>
+
+## Description
+- What the bug is and why it’s a vulnerability.
+- Affected repository/module/component.
+- Exact commit hash analyzed.
+
+## Vulnerable Snippet Code
+- Minimal relevant code snippet with full relative path + line numbers.
+- Annotate risky lines and usage.
+
+## Step by Step Reproduce (Technical)
+- Environment setup (commit hash, dependencies, build/run commands)
+- Precise steps to reproduce (local-only; no production exploits)
+- Expected vs actual behavior
+- Safe, using mocks or local testing; no real secrets
+
+## Proof of Concept (PoC)
+- If applicable, create PoC under `poc/<shortname>/`
+- Include `README.md` and `run.sh` for execution
+- Show key outputs demonstrating the bug
+
+## Impact
+- Realistic consequences (data leak, unauthorized access, business logic bypass)
+- Map severity (Critical/High/Medium/Low)
+- Provide CVSS v3.1 vector if applicable
+
+## Recommendation
+- Concrete fix (input sanitization, validation, auth checks, config changes)
+- Minimal patch or pseudocode if trivial
+
+6) Be deterministic (do not make network calls unless strictly necessary and safe). Redact any secrets. Prefer local mocks/simulation. Do NOT include speculative or low-confidence items; if uncertain, mark as “needs further validation” and DO NOT write a vulnerability file.
+
+7) After processing, ensure each `vulnerability-*.md` is self-contained and executable to reproduce with only the repository content and your PoC folder.
+
+Begin now. Do NOT re-clone the repository; use the folder present in the current directory.
