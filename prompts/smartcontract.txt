@@ -2,7 +2,7 @@ You are a Senior Smart Contract Security Engineer performing a bug bounty source
 
 Context:
 The target repository is ALREADY cloned in the current working directory with this folder name:
-- dodo-limit-order/
+- [Folder Name]/
 
 Your mission:
 1) Perform a thorough static review of ALL Solidity code across this repository and identify concrete, reproducible security vulnerabilities relevant to smart contracts:
